@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrase Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Phrase Generator</h1>
+
+<button onclick="getRandomPhrase()">Get Random Phrase</button>
+
+<div id="phraseContainer">
+    <!-- Display the phrase here -->
+</div>
+
+<form id="addPhraseForm">
+    <label for="newPhrase">New Phrase:</label>
+    <input type="text" id="newPhrase" name="newPhrase" required>
+    <button type="button" onclick="addNewPhrase()">Add Phrase</button>
+</form>
+
+<script>
+    // Initialize the index from local storage or set it to 0
+    let currentIndex = localStorage.getItem('phraseIndex') || 0;
+
+    function getRandomPhrase() {
+        fetch(`/phrases?index=${currentIndex}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('phraseContainer').innerText = data.phrase;
+                currentIndex = data.index;
+                localStorage.setItem('phraseIndex', currentIndex);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function addNewPhrase() {
+        const newPhrase = document.getElementById('newPhrase').value;
+
+        fetch('/phrases', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ phrase: newPhrase }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // You can display a success message or update the phraseContainer
+            // For simplicity, let's reload the page to show the newly added phrase
+            location.reload();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+</body>
+</html>
