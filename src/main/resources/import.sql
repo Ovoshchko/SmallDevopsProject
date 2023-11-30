@@ -1,0 +1,1 @@
+INSERT INTO phrases ("phrase", "creation_date") VALUES ('Ok, Zoomer', '2023-10-10'), ('Yes, siiir', '2023-12-12');

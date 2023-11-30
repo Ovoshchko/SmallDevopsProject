@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/postgres
+    username: postgres
+    password: qwerty15112003
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    generate-ddl: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+      dialect: PostgreSQL10Dialect
+      globally_quoted_identifiers: true
+
+    database: postgresql
+    properties:
+      jakarta:
+        persistence:
+          schema-generation:
+            database:
+              action: create-drop
+            create-source: script
+            create-script-source: schema.sql
+            sql-load-script-source: import.sql
+
+  server:
+    port: 8080
